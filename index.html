@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Indian Railways — Gujarat Rail Booking</title>
+
+  <!-- Fonts: Baloo 2 (Gujarati-feel headings) + Nunito (warm, readable body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <!-- Flatpickr datepicker -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+  <style>
+    :root {
+      --navy:       #1A3A6B;
+      --navy-dark:  #0F2550;
+      --navy-lt:    #2352A0;
+      --saffron:    #E8580A;
+      --saffron-lt: #FF7B35;
+      --saffron-bg: #FFF3EC;
+      --green:      #1B8A4C;
+      --green-bg:   #EDFAF3;
+      --gold:       #C8860A;
+      --gold-bg:    #FFF8E8;
+      --ink:        #1C1C2E;
+      --body:       #3D3D52;
+      --muted:      #7A7A9A;
+      --border:     #E2E5EF;
+      --bg:         #F4F6FC;
+      --white:      #FFFFFF;
+      --card-shadow: 0 2px 16px rgba(26,58,107,0.08);
+      --card-shadow-hover: 0 8px 32px rgba(26,58,107,0.14);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    h1,h2,h3,h4,h5 { font-family: 'Baloo 2', cursive; font-weight: 700; }
+
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #f0f0f5; }
+    ::-webkit-scrollbar-thumb { background: var(--saffron); border-radius: 4px; }
+
+    a { text-decoration: none; color: inherit; }
+
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 20px; }
+
+    /* ════════════════════════════════════════════════
+       NAVBAR
+    ════════════════════════════════════════════════ */
+    .navbar {
+      background: var(--navy);
+      position: sticky; top: 0; z-index: 200;
+      box-shadow: 0 2px 16px rgba(15,37,80,0.22);
+    }
+    .nav-top {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 66px; gap: 16px;
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 11px; flex-shrink: 0;
+    }
+    .logo-wrap {
+      width: 46px; height: 46px; border-radius: 12px;
+      background: white; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15); overflow: hidden; padding: 3px;
+      flex-shrink: 0;
+    }
+    .logo-svg { width: 100%; height: 100%; }
+    .logo-text .brand {
+      font-family: 'Baloo 2', cursive; font-size: 20px; font-weight: 800;
+      color: white; letter-spacing: 0.03em; line-height: 1.1;
+    }
+    .logo-text .tagline {
+      font-size: 10px; color: rgba(255,255,255,0.5);
+      letter-spacing: 0.14em; text-transform: uppercase; display: block;
+    }
+
+    .nav-links {
+      display: flex; align-items: center; gap: 2px;
+      flex: 1; justify-content: center;
+    }
+    .nav-link {
+      color: rgba(255,255,255,0.72); font-size: 14px; font-weight: 600;
+      padding: 7px 14px; border-radius: 8px; white-space: nowrap;
+      transition: all 0.18s; cursor: pointer;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .nav-link:hover { background: rgba(255,255,255,0.1); color: white; }
+    .nav-link.active { background: rgba(232,88,10,0.2); color: #FFA06A; }
+    .nav-link svg { width: 15px; height: 15px; }
+
+    .nav-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+    .btn { 
+      font-family: 'Nunito', sans-serif; font-weight: 700;
+      border-radius: 9px; cursor: pointer; transition: all 0.18s;
+      display: inline-flex; align-items: center; gap: 7px;
+      white-space: nowrap; border: none;
+    }
+    .btn-sm { padding: 8px 18px; font-size: 13px; }
+    .btn-md { padding: 10px 22px; font-size: 14px; }
+    .btn-lg { padding: 13px 28px; font-size: 15px; }
+
+    .btn-ghost {
+      background: transparent; border: 1.5px solid rgba(255,255,255,0.3);
+      color: rgba(255,255,255,0.88);
+    }
+    .btn-ghost:hover { border-color: rgba(255,255,255,0.65); color: white; }
+
+    .btn-saffron {
+      background: var(--saffron); color: white;
+      box-shadow: 0 3px 12px rgba(232,88,10,0.35);
+    }
+    .btn-saffron:hover { background: var(--saffron-lt); transform: translateY(-1px); box-shadow: 0 6px 18px rgba(232,88,10,0.42); }
+
+    .btn-navy {
+      background: var(--navy); color: white;
+      box-shadow: 0 3px 12px rgba(26,58,107,0.3);
+    }
+    .btn-navy:hover { background: var(--navy-lt); transform: translateY(-1px); }
+
+    .btn-white {
+      background: white; color: var(--navy);
+      box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    }
+    .btn-white:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+
+    .ham-btn { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+    .ham-btn span { display: block; width: 24px; height: 2.5px; background: white; margin: 5px 0; border-radius: 2px; transition: 0.3s; }
+
+    /* Mobile nav */
+    .mobile-nav {
+      display: none; position: fixed; inset: 66px 0 0 0;
+      background: var(--navy-dark); z-index: 199;
+      padding: 20px; overflow-y: auto;
+    }
+    .mobile-nav.open { display: block; }
+    .mobile-nav .m-link {
+      display: flex; align-items: center; gap: 10px;
+      color: rgba(255,255,255,0.8); font-weight: 600; font-size: 15px;
+      padding: 14px 16px; border-radius: 10px; cursor: pointer;
+      transition: all 0.18s;
+    }
+    .mobile-nav .m-link:hover, .mobile-nav .m-link.active { background: rgba(255,255,255,0.08); color: white; }
+    .mobile-nav .m-divider { height: 1px; background: rgba(255,255,255,0.08); margin: 8px 0; }
+    .mobile-nav .m-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+
+    /* ════════════════════════════════════════════════
+       SERVICE STRIP
+    ════════════════════════════════════════════════ */
+    .service-strip {
+      background: white;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+    .strip-inner {
+      display: flex; align-items: center; gap: 0;
+      overflow-x: auto; max-width: 1280px; margin: 0 auto; padding: 0 20px;
+    }
+    .strip-inner::-webkit-scrollbar { display: none; }
+    .svc-tab {
+      display: flex; align-items: center; gap: 8px; flex-shrink: 0;
+      padding: 13px 18px; border-bottom: 3px solid transparent;
+      color: var(--muted); font-size: 13.5px; font-weight: 600;
+      cursor: pointer; white-space: nowrap; transition: all 0.18s;
+    }
+    .svc-tab:hover { color: var(--saffron); }
+    .svc-tab.active { color: var(--saffron); border-bottom-color: var(--saffron); }
+    .svc-tab svg { width: 16px; height: 16px; }
+
+    /* ════════════════════════════════════════════════
+       HERO
+    ════════════════════════════════════════════════ */
+    .hero {
+      background: linear-gradient(135deg, var(--navy-dark) 0%, #14306B 55%, #1A3A6B 100%);
+      padding: 52px 0 0; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 85% 15%, rgba(232,88,10,0.1) 0%, transparent 55%),
+        radial-gradient(ellipse 40% 50% at 5% 90%, rgba(255,255,255,0.04) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    /* Decorative dots pattern */
+    .hero::after {
+      content: ''; position: absolute; inset: 0;
+      background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+      background-size: 32px 32px;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1280px; margin: 0 auto; padding: 0 20px;
+      display: grid; grid-template-columns: 1fr 420px;
+      gap: 52px; align-items: end; position: relative; z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(232,88,10,0.15); border: 1px solid rgba(232,88,10,0.35);
+      border-radius: 30px; padding: 5px 14px 5px 8px; margin-bottom: 18px;
+    }
+    .hero-badge .live-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: #22c55e;
+      animation: livepulse 2s ease-in-out infinite;
+    }
+    @keyframes livepulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.85)} }
+    .hero-badge span { color: #FFB083; font-size: 12px; font-weight: 700; letter-spacing: 0.05em; }
+
+    .hero-title {
+      font-family: 'Baloo 2', cursive; font-size: 46px; font-weight: 800;
+      color: white; line-height: 1.15; margin-bottom: 14px;
+    }
+    .hero-title .accent { color: #FF9B5E; }
+    .hero-sub { color: rgba(255,255,255,0.58); font-size: 15.5px; line-height: 1.65; max-width: 430px; margin-bottom: 32px; }
+
+    .hero-stats { display: flex; gap: 36px; padding-bottom: 44px; }
+    .stat-val { font-family: 'Baloo 2', cursive; font-size: 28px; font-weight: 800; color: white; line-height: 1; }
+    .stat-lbl { font-size: 12px; color: rgba(255,255,255,0.42); margin-top: 3px; font-weight: 500; }
+
+    /* Track decoration at hero bottom */
+    .hero-track {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 36px;
+      overflow: hidden;
+    }
+
+    /* ════════════════════════════════════════════════
+       SEARCH CARD
+    ════════════════════════════════════════════════ */
+    .search-card {
+      background: white; border-radius: 20px 20px 0 0;
+      padding: 26px 26px 32px;
+      box-shadow: 0 -10px 50px rgba(0,0,0,0.2);
+      position: relative; z-index: 2;
+    }
+
+    .card-tabs {
+      display: flex; gap: 0; margin-bottom: 22px;
+      background: var(--bg); border-radius: 12px; padding: 4px;
+    }
+    .card-tab {
+      flex: 1; text-align: center; padding: 9px 10px;
+      border-radius: 9px; font-size: 13px; font-weight: 700;
+      color: var(--muted); cursor: pointer; transition: all 0.2s;
+      font-family: 'Nunito', sans-serif;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .card-tab svg { width: 14px; height: 14px; }
+    .card-tab.active { background: white; color: var(--navy); box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    .card-tab:hover:not(.active) { color: var(--navy); }
+
+    .field-group { display: flex; flex-direction: column; gap: 5px; }
+    .field-label {
+      font-size: 11px; font-weight: 700; color: var(--muted);
+      letter-spacing: 0.08em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 5px;
+    }
+    .field-label svg { width: 11px; height: 11px; }
+
+    .field-input {
+      width: 100%; border: 1.5px solid var(--border); border-radius: 10px;
+      padding: 11px 14px; font-size: 15px; font-weight: 600;
+      color: var(--ink); font-family: 'Nunito', sans-serif;
+      background: white; outline: none; transition: border-color 0.18s;
+    }
+    .field-input:focus { border-color: var(--navy); }
+    .field-input::placeholder { color: #B8BCCC; font-weight: 500; }
+
+    .stations-row {
+      display: grid; grid-template-columns: 1fr 48px 1fr;
+      align-items: end; gap: 8px; margin-bottom: 14px;
+    }
+    .swap-btn {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: var(--saffron-bg); border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.22s; margin-bottom: 0;
+      flex-shrink: 0; align-self: flex-end; margin-bottom: 1px;
+    }
+    .swap-btn:hover { background: var(--saffron); border-color: var(--saffron); }
+    .swap-btn:hover svg { color: white !important; }
+    .swap-btn svg { color: var(--saffron); width: 18px; height: 18px; transition: 0.22s; }
+
+    .options-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;
+    }
+
+    .class-row { margin-bottom: 16px; }
+    .class-row label { font-size: 11px; font-weight: 700; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; display: block; margin-bottom: 8px; }
+    .class-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+    .class-chip {
+      padding: 6px 13px; border-radius: 7px; font-size: 12.5px; font-weight: 700;
+      border: 1.5px solid var(--border); color: var(--muted); cursor: pointer; transition: all 0.18s;
+      font-family: 'Nunito', sans-serif;
+    }
+    .class-chip.active, .class-chip:hover { background: var(--navy); color: white; border-color: var(--navy); }
+
+    .search-extras { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; flex-wrap: wrap; }
+    .toggle-wrap { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .toggle-wrap span { font-size: 12.5px; color: var(--body); font-weight: 600; }
+    .toggle {
+      width: 36px; height: 20px; border-radius: 10px; background: var(--border);
+      position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0;
+    }
+    .toggle-thumb {
+      position: absolute; top: 3px; left: 3px;
+      width: 14px; height: 14px; border-radius: 50%; background: white;
+      transition: left 0.2s; box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+    .toggle.on { background: var(--saffron); }
+    .toggle.on .toggle-thumb { left: 19px; }
+
+    /* PNR tab */
+    .pnr-form { display: flex; gap: 10px; align-items: flex-end; }
+    .pnr-form .field-group { flex: 1; }
+
+    /* Train status tab */
+    .status-form { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+
+    /* ════════════════════════════════════════════════
+       MAIN CONTENT AREA
+    ════════════════════════════════════════════════ */
+    .main { padding: 36px 0 60px; }
+    .section { margin-bottom: 48px; }
+    .section-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .section-title {
+      font-family: 'Baloo 2', cursive; font-size: 22px; font-weight: 800; color: var(--ink);
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-title svg { width: 20px; height: 20px; color: var(--saffron); }
+    .section-badge {
+      background: var(--saffron-bg); color: var(--saffron);
+      font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 20px;
+      letter-spacing: 0.05em; text-transform: uppercase;
+    }
+    .see-all {
+      font-size: 13.5px; font-weight: 700; color: var(--navy); cursor: pointer;
+      display: flex; align-items: center; gap: 5px; transition: gap 0.18s;
+    }
+    .see-all:hover { gap: 9px; }
+    .see-all svg { width: 15px; height: 15px; }
+
+    /* ════════════════════════════════════════════════
+       QUICK SERVICES GRID
+    ════════════════════════════════════════════════ */
+    .quick-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 12px;
+    }
+    .quick-card {
+      background: white; border-radius: 14px;
+      padding: 18px 12px; text-align: center;
+      border: 1.5px solid var(--border);
+      cursor: pointer; transition: all 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .quick-card::before {
+      content: ''; position: absolute; inset: 0;
+      opacity: 0; transition: opacity 0.2s;
+      background: linear-gradient(135deg, var(--saffron-bg), transparent);
+    }
+    .quick-card:hover { border-color: var(--saffron); transform: translateY(-3px); box-shadow: var(--card-shadow-hover); }
+    .quick-card:hover::before { opacity: 1; }
+    .quick-card:hover .qc-icon { background: var(--saffron); }
+    .quick-card:hover .qc-icon svg { color: white !important; }
+    .qc-icon {
+      width: 48px; height: 48px; border-radius: 13px; margin: 0 auto 10px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s; position: relative; z-index: 1;
+    }
+    .qc-icon svg { width: 22px; height: 22px; transition: all 0.2s; }
+    .qc-label {
+      font-size: 12px; font-weight: 700; color: var(--body);
+      line-height: 1.3; position: relative; z-index: 1;
+    }
+
+    /* ════════════════════════════════════════════════
+       ROUTES GRID
+    ════════════════════════════════════════════════ */
+    .routes-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .route-card {
+      background: white; border-radius: 14px;
+      border: 1.5px solid var(--border);
+      padding: 16px 18px; cursor: pointer; transition: all 0.2s;
+      display: flex; align-items: center; gap: 14px;
+    }
+    .route-card:hover { border-color: var(--navy-lt); transform: translateY(-2px); box-shadow: var(--card-shadow-hover); }
+    .route-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: #EEF3FF; border: 1.5px solid #D0DBFF;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      transition: all 0.2s;
+    }
+    .route-card:hover .route-icon { background: var(--navy); border-color: var(--navy); }
+    .route-card:hover .route-icon svg { color: white !important; }
+    .route-icon svg { width: 20px; height: 20px; color: var(--navy); transition: all 0.2s; }
+    .route-info { flex: 1; min-width: 0; }
+    .route-cities { font-size: 15px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+    .route-cities .arrow { color: var(--saffron); font-size: 14px; }
+    .route-meta { font-size: 12px; color: var(--muted); margin-top: 3px; font-weight: 500; }
+    .route-price {
+      font-family: 'Baloo 2', cursive; font-size: 17px; font-weight: 800;
+      color: var(--green); flex-shrink: 0;
+    }
+
+    /* ════════════════════════════════════════════════
+       OFFERS SCROLL
+    ════════════════════════════════════════════════ */
+    .offers-scroll {
+      display: flex; gap: 14px; overflow-x: auto; padding-bottom: 8px; -webkit-overflow-scrolling: touch;
+    }
+    .offers-scroll::-webkit-scrollbar { height: 3px; }
+    .offer-card {
+      min-width: 280px; border-radius: 16px; overflow: hidden;
+      box-shadow: var(--card-shadow); flex-shrink: 0; transition: all 0.2s; cursor: pointer;
+    }
+    .offer-card:hover { transform: translateY(-3px); box-shadow: var(--card-shadow-hover); }
+    .offer-head {
+      padding: 22px 22px 18px; position: relative; min-height: 110px;
+      display: flex; flex-direction: column; justify-content: flex-end;
+    }
+    .offer-tag {
+      position: absolute; top: 14px; right: 14px;
+      background: rgba(255,255,255,0.2); color: white;
+      font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 20px;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+    .offer-title { color: white; font-family: 'Baloo 2', cursive; font-size: 17px; font-weight: 700; line-height: 1.25; }
+    .offer-body { background: white; padding: 14px 18px; display: flex; align-items: center; gap: 10px; }
+    .offer-desc { font-size: 12.5px; color: var(--body); flex: 1; line-height: 1.5; }
+    .offer-go {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--bg); border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .offer-go svg { width: 14px; height: 14px; color: var(--navy); }
+
+    /* ════════════════════════════════════════════════
+       STATS / INFO STRIP
+    ════════════════════════════════════════════════ */
+    .info-strip {
+      background: var(--navy);
+      border-radius: 20px; padding: 32px 40px;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 24px; text-align: center;
+    }
+    .info-item { position: relative; }
+    .info-item + .info-item::before {
+      content: ''; position: absolute; left: -12px; top: 50%; transform: translateY(-50%);
+      height: 50%; width: 1px; background: rgba(255,255,255,0.12);
+    }
+    .info-val {
+      font-family: 'Baloo 2', cursive; font-size: 30px; font-weight: 800;
+      color: white; line-height: 1;
+    }
+    .info-val .unit { font-size: 18px; color: #FF9B5E; }
+    .info-lbl { font-size: 12.5px; color: rgba(255,255,255,0.45); margin-top: 5px; font-weight: 600; }
+    .info-icon { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; }
+    .info-icon svg { width: 18px; height: 18px; color: #FF9B5E; }
+
+    /* ════════════════════════════════════════════════
+       GUJARAT TOURISM
+    ════════════════════════════════════════════════ */
+    .tourism-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .tourism-card {
+      border-radius: 16px; overflow: hidden;
+      position: relative; cursor: pointer;
+      aspect-ratio: 4/3;
+      box-shadow: var(--card-shadow); transition: all 0.25s;
+    }
+    .tourism-card:hover { transform: translateY(-4px); box-shadow: var(--card-shadow-hover); }
+    .tourism-card:hover .tc-img { transform: scale(1.06); }
+    .tc-img {
+      width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.5s ease;
+      display: block;
+    }
+    /* Fallback gradient bg for image placeholder */
+    .tc-bg { width: 100%; height: 100%; transition: transform 0.5s ease; }
+    .tc-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(15,37,80,0.88) 0%, rgba(15,37,80,0.1) 55%, transparent 100%);
+    }
+    .tc-content { position: absolute; bottom: 0; left: 0; right: 0; padding: 18px 18px 20px; }
+    .tc-tag {
+      display: inline-block; background: rgba(232,88,10,0.85); color: white;
+      font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 20px;
+      margin-bottom: 7px; letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .tc-name { color: white; font-family: 'Baloo 2', cursive; font-size: 20px; font-weight: 800; line-height: 1.2; }
+    .tc-route { color: rgba(255,255,255,0.62); font-size: 12px; margin-top: 3px; font-weight: 600; }
+    .tc-price { color: #FFB083; font-size: 13px; font-weight: 700; margin-top: 4px; }
+
+    /* ════════════════════════════════════════════════
+       TRAIN ALERTS / TIPS SECTION
+    ════════════════════════════════════════════════ */
+    .tips-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+    .tip-card {
+      background: white; border-radius: 14px;
+      border: 1.5px solid var(--border);
+      padding: 20px 18px; transition: all 0.2s;
+    }
+    .tip-card:hover { border-color: #c3d0f0; box-shadow: var(--card-shadow-hover); }
+    .tip-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 14px;
+    }
+    .tip-icon svg { width: 22px; height: 22px; }
+    .tip-title { font-family: 'Baloo 2', cursive; font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+    .tip-desc { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+    /* ════════════════════════════════════════════════
+       APP DOWNLOAD BANNER
+    ════════════════════════════════════════════════ */
+    .app-banner {
+      background: linear-gradient(135deg, #0F2550 0%, var(--navy) 60%, #1E4080 100%);
+      border-radius: 20px; padding: 40px 44px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: relative; overflow: hidden;
+    }
+    .app-banner::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 50% 100% at 100% 50%, rgba(232,88,10,0.12) 0%, transparent 60%);
+    }
+    .app-banner-left { position: relative; z-index: 1; }
+    .app-banner-tag {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(232,88,10,0.15); border: 1px solid rgba(232,88,10,0.3);
+      border-radius: 20px; padding: 4px 12px; margin-bottom: 14px;
+    }
+    .app-banner-tag span { color: #FFA06A; font-size: 11.5px; font-weight: 700; letter-spacing: 0.05em; }
+    .app-banner h3 { font-family: 'Baloo 2', cursive; font-size: 28px; font-weight: 800; color: white; margin-bottom: 8px; line-height: 1.2; }
+    .app-banner p { color: rgba(255,255,255,0.55); font-size: 14.5px; max-width: 380px; margin-bottom: 24px; line-height: 1.6; }
+    .app-btns { display: flex; gap: 12px; }
+    .app-store-btn {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,0.1); border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: 12px; padding: 11px 18px; cursor: pointer; transition: all 0.2s;
+    }
+    .app-store-btn:hover { background: rgba(255,255,255,0.18); border-color: rgba(255,255,255,0.4); transform: translateY(-2px); }
+    .app-store-btn svg { width: 24px; height: 24px; color: white; flex-shrink: 0; }
+    .app-store-text .sub { font-size: 10px; color: rgba(255,255,255,0.55); text-transform: uppercase; letter-spacing: 0.05em; }
+    .app-store-text .main { font-size: 15px; font-weight: 700; color: white; }
+    .app-banner-right { position: relative; z-index: 1; }
+    .phone-mockup {
+      width: 160px; height: 220px; border-radius: 24px;
+      background: rgba(255,255,255,0.08); border: 2px solid rgba(255,255,255,0.15);
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .phone-mockup svg { width: 60px; height: 60px; color: rgba(255,255,255,0.25); }
+    .phone-mockup::before {
+      content: ''; position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+      width: 40px; height: 4px; background: rgba(255,255,255,0.12); border-radius: 2px;
+    }
+
+    /* ════════════════════════════════════════════════
+       HELPLINE BANNER
+    ════════════════════════════════════════════════ */
+    .helpline-bar {
+      background: var(--green-bg); border: 1.5px solid #c3ead6;
+      border-radius: 14px; padding: 18px 24px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .helpline-bar .icon { width: 48px; height: 48px; border-radius: 12px; background: var(--green); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .helpline-bar .icon svg { width: 24px; height: 24px; color: white; }
+    .helpline-bar h4 { font-family: 'Baloo 2', cursive; font-size: 16px; color: var(--ink); margin-bottom: 2px; }
+    .helpline-bar p { font-size: 13px; color: var(--muted); }
+    .helpline-bar .nums { display: flex; gap: 14px; margin-left: auto; }
+    .helpline-bar .num-btn {
+      display: flex; align-items: center; gap: 7px;
+      background: var(--green); color: white;
+      padding: 9px 18px; border-radius: 9px; font-weight: 700; font-size: 14px;
+      cursor: pointer; transition: all 0.18s; border: none; font-family: 'Nunito', sans-serif;
+    }
+    .helpline-bar .num-btn:hover { background: #156638; transform: translateY(-1px); }
+    .helpline-bar .num-btn svg { width: 16px; height: 16px; }
+
+    /* ════════════════════════════════════════════════
+       FOOTER
+    ════════════════════════════════════════════════ */
+    .footer {
+      background: var(--navy-dark); color: rgba(255,255,255,0.6);
+      padding: 60px 0 0;
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px; padding-bottom: 48px;
+    }
+    .footer-brand .logo-wrap { margin-bottom: 16px; }
+    .footer-brand p { font-size: 13.5px; line-height: 1.65; max-width: 280px; margin-bottom: 20px; }
+    .footer-social { display: flex; gap: 10px; }
+    .social-btn {
+      width: 36px; height: 36px; border-radius: 9px;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+      display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.18s;
+    }
+    .social-btn:hover { background: var(--saffron); border-color: var(--saffron); }
+    .social-btn svg { width: 16px; height: 16px; color: white; }
+
+    .footer-col h5 {
+      font-family: 'Baloo 2', cursive; font-size: 16px; font-weight: 700;
+      color: white; margin-bottom: 18px;
+    }
+    .footer-links { display: flex; flex-direction: column; gap: 10px; }
+    .footer-link {
+      font-size: 13.5px; color: rgba(255,255,255,0.55); cursor: pointer;
+      transition: color 0.18s; display: flex; align-items: center; gap: 6px;
+    }
+    .footer-link:hover { color: #FFA06A; }
+    .footer-link svg { width: 13px; height: 13px; opacity: 0.5; }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 20px 0;
+      display: flex; align-items: center; justify-content: space-between;
+      font-size: 12.5px;
+    }
+    .footer-bottom .badges { display: flex; gap: 10px; }
+    .footer-badge {
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 7px; padding: 5px 12px; font-size: 11.5px; font-weight: 600;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .footer-badge svg { width: 13px; height: 13px; }
+
+    /* ════════════════════════════════════════════════
+       RESPONSIVE
+    ════════════════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .nav-links { display: none; }
+      .ham-btn { display: block; }
+      .hero-inner { grid-template-columns: 1fr; gap: 32px; }
+      .search-card { border-radius: 20px; margin: 0 0 0; }
+      .hero-sub, .hero-stats { display: none; }
+      .hero { padding: 32px 0 0; }
+      .hero-title { font-size: 34px; }
+      .quick-grid { grid-template-columns: repeat(4, 1fr); }
+      .tips-grid { grid-template-columns: repeat(2, 1fr); }
+      .tourism-grid { grid-template-columns: repeat(2, 1fr); }
+      .info-strip { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .app-banner { flex-direction: column; gap: 24px; }
+      .app-banner-right { display: none; }
+    }
+
+    @media (max-width: 640px) {
+      .container { padding: 0 14px; }
+      .nav-top { height: 58px; padding: 0 14px; }
+      .nav-right .btn-ghost { display: none; }
+      .hero { padding: 24px 0 0; }
+      .hero-title { font-size: 26px; }
+      .hero-inner { padding: 0 14px; gap: 20px; }
+      .search-card { padding: 18px 16px 24px; }
+      .stations-row { grid-template-columns: 1fr 44px 1fr; }
+      .options-row { grid-template-columns: 1fr; }
+      .class-chips { flex-wrap: nowrap; overflow-x: auto; }
+      .class-chip { flex-shrink: 0; }
+      .quick-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+      .qc-icon { width: 40px; height: 40px; }
+      .qc-icon svg { width: 18px; height: 18px; }
+      .qc-label { font-size: 11px; }
+      .routes-grid { grid-template-columns: 1fr; }
+      .tips-grid { grid-template-columns: 1fr 1fr; }
+      .tourism-grid { grid-template-columns: 1fr; }
+      .info-strip { padding: 24px 20px; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+      .info-item + .info-item::before { display: none; }
+      .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+      .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+      .helpline-bar { flex-wrap: wrap; }
+      .helpline-bar .nums { margin-left: 0; width: 100%; }
+      .helpline-bar .num-btn { flex: 1; justify-content: center; }
+      .app-banner { padding: 28px 24px; }
+      .app-btns { flex-direction: column; }
+      .section-title { font-size: 19px; }
+    }
+
+    /* ── Fade-in animation ── */
+    .fade-up { opacity: 0; transform: translateY(28px); }
+    .fade-up.visible { opacity: 1; transform: translateY(0); transition: opacity 0.55s ease, transform 0.55s ease; }
+
+    /* ── Tab content visibility ── */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════════
+     NAVBAR
+════════════════════════════════════════════════ -->
+<nav class="navbar">
+  <div class="container">
+    <div class="nav-top">
+      <!-- Logo -->
+      <a class="nav-logo" href="#">
+        <div class="logo-wrap">
+          <!-- Indian Railways SVG Logo -->
+          <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="46" fill="#1A3A6B"/>
+            <circle cx="50" cy="50" r="38" fill="none" stroke="white" stroke-width="2"/>
+            <!-- Wheel spokes -->
+            <g stroke="white" stroke-width="1.5">
+              <line x1="50" y1="12" x2="50" y2="88"/>
+              <line x1="12" y1="50" x2="88" y2="50"/>
+              <line x1="22.5" y1="22.5" x2="77.5" y2="77.5"/>
+              <line x1="77.5" y1="22.5" x2="22.5" y2="77.5"/>
+            </g>
+            <circle cx="50" cy="50" r="7" fill="white"/>
+            <!-- Train icon in center -->
+            <text x="50" y="55" text-anchor="middle" fill="#1A3A6B" font-size="9" font-weight="bold" font-family="sans-serif">IR</text>
+            <!-- Saffron arc -->
+            <path d="M 22 28 Q 50 8 78 28" fill="none" stroke="#E8580A" stroke-width="3" stroke-linecap="round"/>
+            <!-- Green arc -->
+            <path d="M 22 72 Q 50 92 78 72" fill="none" stroke="#1B8A4C" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <div class="brand">IRCTC</div>
+          <span class="tagline">Indian Railways</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <div class="nav-links">
+        <div class="nav-link active">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 12h16"/><circle cx="8" cy="17" r="1"/><circle cx="16" cy="17" r="1"/></svg>
+          Train Tickets
+        </div>
+        <div class="nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Tourism
+        </div>
+        <div class="nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          Hotels
+        </div>
+        <div class="nav-link">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h2a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2h-2v4l-4-4H9a1.994 1.994 0 0 1-1.414-.586m0 0L11 14h4a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2v4l.586-.586z"/></svg>
+          Contact
+        </div>
+      </div>
+
+      <!-- Right actions -->
+      <div class="nav-right">
+        <button class="btn btn-ghost btn-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Login
+        </button>
+        <button class="btn btn-saffron btn-sm">Register</button>
+        <button class="ham-btn" onclick="toggleMobileMenu()" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Nav Drawer -->
+<div class="mobile-nav" id="mobileNav">
+  <div class="m-link active">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 12h16"/><circle cx="8" cy="17" r="1"/><circle cx="16" cy="17" r="1"/></svg>
+    Train Tickets
+  </div>
+  <div class="m-link">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    Tourism
+  </div>
+  <div class="m-link">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+    Hotels
+  </div>
+  <div class="m-link">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    My Bookings
+  </div>
+  <div class="m-divider"></div>
+  <div class="m-actions">
+    <button class="btn btn-ghost btn-md" style="border-color:rgba(255,255,255,0.3);color:white;width:100%;justify-content:center;">Login</button>
+    <button class="btn btn-saffron btn-md" style="width:100%;justify-content:center;">Register Free</button>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     SERVICE STRIP
+════════════════════════════════════════════════ -->
+<div class="service-strip">
+  <div class="strip-inner">
+    <div class="svc-tab active" onclick="setStripTab(this,'trains')">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 12h16"/><circle cx="8" cy="17" r="1"/><circle cx="16" cy="17" r="1"/></svg>
+      Train
+    </div>
+    <div class="svc-tab" onclick="setStripTab(this,'tatkal')">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      Tatkal
+    </div>
+    <div class="svc-tab" onclick="setStripTab(this,'pnr')">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/></svg>
+      PNR Status
+    </div>
+    <div class="svc-tab" onclick="setStripTab(this,'status')">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Live Status
+    </div>
+    <div class="svc-tab" onclick="setStripTab(this,'cancel')">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+      Cancel Ticket
+    </div>
+    <div class="svc-tab" onclick="setStripTab(this,'tourism')">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      Gujarat Tourism
+    </div>
+    <div class="svc-tab" onclick="setStripTab(this,'freight')">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      Freight
+    </div>
+    <div class="svc-tab" onclick="setStripTab(this,'loyalty')">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      IRCTC Prime
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     HERO
+════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-inner">
+    <!-- Left: Text + Stats -->
+    <div class="hero-left">
+      <div class="hero-badge">
+        <div class="live-dot"></div>
+        <span>Live Booking — Gujarat Region</span>
+      </div>
+      <h1 class="hero-title">
+        Book Trains<br/>
+        Across <span class="accent">Gujarat</span><br/>
+        & Beyond
+      </h1>
+      <p class="hero-sub">
+        From Ahmedabad to Mumbai, Surat to Delhi — book confirmed train tickets instantly with IRCTC. Safe, fast, and trusted by crores of passengers.
+      </p>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-val"><span class="counter" data-target="1400000">0</span></div>
+          <div class="stat-lbl">Bookings Today</div>
+        </div>
+        <div>
+          <div class="stat-val"><span class="counter" data-target="13452">0</span> <small style="font-size:18px;color:#FF9B5E;">+</small></div>
+          <div class="stat-lbl">Daily Trains</div>
+        </div>
+        <div>
+          <div class="stat-val"><span class="counter" data-target="7325">0</span></div>
+          <div class="stat-lbl">Stations</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Search Card -->
+    <div class="search-card" id="searchCard">
+      <!-- Tabs -->
+      <div class="card-tabs">
+        <div class="card-tab active" onclick="switchCardTab(this,'trains')">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 12h16"/><circle cx="8" cy="17" r="1"/><circle cx="16" cy="17" r="1"/></svg>
+          Trains
+        </div>
+        <div class="card-tab" onclick="switchCardTab(this,'tatkal')">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Tatkal
+        </div>
+        <div class="card-tab" onclick="switchCardTab(this,'pnr')">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          PNR
+        </div>
+        <div class="card-tab" onclick="switchCardTab(this,'status')">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Live
+        </div>
+      </div>
+
+      <!-- TRAINS TAB -->
+      <div class="tab-content active" id="tab-trains">
+        <!-- From / Swap / To -->
+        <div class="stations-row">
+          <div class="field-group">
+            <label class="field-label">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg>
+              From
+            </label>
+            <input type="text" class="field-input" id="from-inp" placeholder="Station or City" value="Rajkot (RJT)"/>
+          </div>
+          <button class="swap-btn" onclick="swapStations()" title="Swap stations">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+          </button>
+          <div class="field-group">
+            <label class="field-label">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              To
+            </label>
+            <input type="text" class="field-input" id="to-inp" placeholder="Station or City"/>
+          </div>
+        </div>
+
+        <!-- Date + Quota -->
+        <div class="options-row">
+          <div class="field-group">
+            <label class="field-label">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              Journey Date
+            </label>
+            <input type="text" class="field-input" id="journey-date" placeholder="Select Date" readonly/>
+          </div>
+          <div class="field-group">
+            <label class="field-label">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Quota
+            </label>
+            <select class="field-input">
+              <option>General (GN)</option>
+              <option>Ladies (LD)</option>
+              <option>Senior Citizen (SC)</option>
+              <option>Tatkal (TK)</option>
+              <option>Defence (DF)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Class -->
+        <div class="class-row">
+          <label>Travel Class</label>
+          <div class="class-chips">
+            <div class="class-chip">All</div>
+            <div class="class-chip active">SL</div>
+            <div class="class-chip">3A</div>
+            <div class="class-chip">2A</div>
+            <div class="class-chip">1A</div>
+            <div class="class-chip">CC</div>
+            <div class="class-chip">2S</div>
+          </div>
+        </div>
+
+        <!-- Extras -->
+        <div class="search-extras">
+          <div class="toggle-wrap" onclick="toggleFlex(this.querySelector('.toggle'))">
+            <div class="toggle" id="flexToggle">
+              <div class="toggle-thumb"></div>
+            </div>
+            <span>Flexible Dates</span>
+          </div>
+          <div class="toggle-wrap" onclick="toggleFlex(this.querySelector('.toggle'))">
+            <div class="toggle">
+              <div class="toggle-thumb"></div>
+            </div>
+            <span>Divyaang Quota</span>
+          </div>
+        </div>
+
+        <button class="btn btn-saffron btn-lg" style="width:100%;justify-content:center;" onclick="searchTrains()">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          Search Trains
+        </button>
+      </div>
+
+      <!-- TATKAL TAB -->
+      <div class="tab-content" id="tab-tatkal">
+        <div style="background:#FFF8EC;border:1.5px solid #F4D793;border-radius:10px;padding:10px 14px;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="#C8860A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          <span style="font-size:12.5px;color:#8A5A00;font-weight:600;">Tatkal booking opens at <strong>10:00 AM</strong>, 1 day before journey (AC: 11 AM)</span>
+        </div>
+        <div class="stations-row">
+          <div class="field-group">
+            <label class="field-label">From</label>
+            <input type="text" class="field-input" placeholder="From Station"/>
+          </div>
+          <button class="swap-btn" onclick="swapStations()">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+          </button>
+          <div class="field-group">
+            <label class="field-label">To</label>
+            <input type="text" class="field-input" placeholder="To Station"/>
+          </div>
+        </div>
+        <div class="options-row" style="margin-bottom:16px;">
+          <div class="field-group">
+            <label class="field-label">Journey Date</label>
+            <input type="text" class="field-input" placeholder="Select Date" readonly/>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Class</label>
+            <select class="field-input"><option>Sleeper (SL)</option><option>3rd AC (3A)</option><option>2nd AC (2A)</option><option>1st AC (1A)</option></select>
+          </div>
+        </div>
+        <button class="btn btn-saffron btn-lg" style="width:100%;justify-content:center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Book Tatkal Ticket
+        </button>
+      </div>
+
+      <!-- PNR TAB -->
+      <div class="tab-content" id="tab-pnr">
+        <div style="margin-bottom:20px;">
+          <div class="field-group" style="margin-bottom:14px;">
+            <label class="field-label">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              PNR Number
+            </label>
+            <input type="text" class="field-input" placeholder="Enter 10-digit PNR number" maxlength="10" style="font-size:18px;letter-spacing:2px;"/>
+          </div>
+          <button class="btn btn-navy btn-lg" style="width:100%;justify-content:center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Check PNR Status
+          </button>
+        </div>
+        <div style="text-align:center;padding-top:12px;border-top:1px solid var(--border);">
+          <p style="font-size:12.5px;color:var(--muted);">PNR number is on your ticket / booking SMS</p>
+        </div>
+      </div>
+
+      <!-- LIVE STATUS TAB -->
+      <div class="tab-content" id="tab-status">
+        <div class="field-group" style="margin-bottom:14px;">
+          <label class="field-label">Train Number / Name</label>
+          <input type="text" class="field-input" placeholder="e.g. 12009 or Shatabdi Express"/>
+        </div>
+        <div class="options-row" style="margin-bottom:16px;">
+          <div class="field-group">
+            <label class="field-label">Date</label>
+            <input type="text" class="field-input" placeholder="Select Date" readonly/>
+          </div>
+          <div class="field-group">
+            <label class="field-label">Board Station</label>
+            <input type="text" class="field-input" placeholder="Your station"/>
+          </div>
+        </div>
+        <button class="btn btn-navy btn-lg" style="width:100%;justify-content:center;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Get Live Status
+        </button>
+      </div>
+    </div><!-- /search-card -->
+  </div><!-- /hero-inner -->
+
+  <!-- Track rail decoration -->
+  <div class="hero-track">
+    <svg viewBox="0 0 1440 36" preserveAspectRatio="none" style="width:100%;height:100%;" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Rail lines -->
+      <line x1="0" y1="8" x2="1440" y2="8" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+      <line x1="0" y1="28" x2="1440" y2="28" stroke="rgba(255,255,255,0.08)" stroke-width="2"/>
+      <!-- Sleepers -->
+      <g stroke="rgba(255,255,255,0.06)" stroke-width="6" stroke-linecap="square">
+        <line x1="40" y1="4" x2="40" y2="32"/>
+        <line x1="120" y1="4" x2="120" y2="32"/>
+        <line x1="200" y1="4" x2="200" y2="32"/>
+        <line x1="280" y1="4" x2="280" y2="32"/>
+        <line x1="360" y1="4" x2="360" y2="32"/>
+        <line x1="440" y1="4" x2="440" y2="32"/>
+        <line x1="520" y1="4" x2="520" y2="32"/>
+        <line x1="600" y1="4" x2="600" y2="32"/>
+        <line x1="680" y1="4" x2="680" y2="32"/>
+        <line x1="760" y1="4" x2="760" y2="32"/>
+        <line x1="840" y1="4" x2="840" y2="32"/>
+        <line x1="920" y1="4" x2="920" y2="32"/>
+        <line x1="1000" y1="4" x2="1000" y2="32"/>
+        <line x1="1080" y1="4" x2="1080" y2="32"/>
+        <line x1="1160" y1="4" x2="1160" y2="32"/>
+        <line x1="1240" y1="4" x2="1240" y2="32"/>
+        <line x1="1320" y1="4" x2="1320" y2="32"/>
+        <line x1="1400" y1="4" x2="1400" y2="32"/>
+      </g>
+    </svg>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════
+     MAIN CONTENT
+════════════════════════════════════════════════ -->
+<main class="main">
+  <div class="container">
+
+    <!-- ── QUICK SERVICES ── -->
+    <section class="section fade-up">
+      <div class="section-header">
+        <div class="section-title">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          Quick Services
+        </div>
+      </div>
+      <div class="quick-grid" id="quickGrid"></div>
+    </section>
+
+    <!-- ── TWO COLUMN: ROUTES + OFFERS ── -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:48px;" class="fade-up two-col-section">
+
+      <!-- Popular Gujarat Routes -->
+      <section>
+        <div class="section-header">
+          <div class="section-title" style="font-size:19px;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            Gujarat Routes
+          </div>
+          <span class="see-all">
+            View all
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+          </span>
+        </div>
+        <div class="routes-grid" id="routesGrid"></div>
+      </section>
+
+      <!-- Live Offers -->
+      <section>
+        <div class="section-header">
+          <div class="section-title" style="font-size:19px;">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            Offers & Deals
+          </div>
+          <span class="section-badge">Live</span>
+        </div>
+        <div id="offersContainer" style="display:flex;flex-direction:column;gap:10px;"></div>
+      </section>
+
+    </div>
+
+    <!-- ── HELPLINE BANNER ── -->
+    <div class="helpline-bar section fade-up">
+      <div class="icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.44 2 2 0 0 1 3.58 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.4a16 16 0 0 0 6.29 6.29l1.76-1.76a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </div>
+      <div>
+        <h4>Need Help? We're Here</h4>
+        <p>Rail Madad helpline available 24×7 for complaints, queries and assistance</p>
+      </div>
+      <div class="nums">
+        <button class="num-btn">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.44 2 2 0 0 1 3.58 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.4a16 16 0 0 0 6.29 6.29l1.76-1.76a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Call 139
+        </button>
+        <button class="num-btn" style="background:#1561A3;">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Rail Madad
+        </button>
+      </div>
+    </div>
+
+    <!-- ── STATS STRIP ── -->
+    <section class="section fade-up">
+      <div class="info-strip">
+        <div class="info-item">
+          <div class="info-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div class="info-val"><span class="counter" data-target="2400000">0</span><span class="unit">Cr+</span></div>
+          <div class="info-lbl">Registered Users</div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 12h16"/><circle cx="8" cy="17" r="1"/><circle cx="16" cy="17" r="1"/></svg>
+          </div>
+          <div class="info-val"><span class="counter" data-target="13452">0</span><span class="unit">+</span></div>
+          <div class="info-lbl">Trains Daily</div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div class="info-val"><span class="counter" data-target="7325">0</span></div>
+          <div class="info-lbl">Railway Stations</div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div class="info-val">₹<span class="counter" data-target="100">0</span><span class="unit">Cr+</span></div>
+          <div class="info-lbl">Saved via Offers</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── GUJARAT TOURISM ── -->
+    <section class="section fade-up">
+      <div class="section-header">
+        <div class="section-title">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Explore Gujarat by Train
+        </div>
+        <a class="see-all" href="#">
+          All Packages
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </a>
+      </div>
+      <div class="tourism-grid" id="tourismGrid"></div>
+    </section>
+
+    <!-- ── TRAVEL TIPS ── -->
+    <section class="section fade-up">
+      <div class="section-header">
+        <div class="section-title">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Booking Tips
+        </div>
+      </div>
+      <div class="tips-grid" id="tipsGrid"></div>
+    </section>
+
+    <!-- ── APP DOWNLOAD ── -->
+    <section class="section fade-up">
+      <div class="app-banner">
+        <div class="app-banner-left">
+          <div class="app-banner-tag">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="#FFA06A" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <span>4.7 Stars · 5 Crore+ Downloads</span>
+          </div>
+          <h3>Book Tickets Instantly<br/>on the IRCTC App</h3>
+          <p>Get real-time PNR updates, live train tracking, seat availability, and exclusive app-only offers. Works great even on slow internet.</p>
+          <div class="app-btns">
+            <div class="app-store-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24" height="24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+              <div class="app-store-text">
+                <div class="sub">Download on the</div>
+                <div class="main">App Store</div>
+              </div>
+            </div>
+            <div class="app-store-btn">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="24" height="24"><path d="M3.18 23.76a2 2 0 0 0 2.07-.22l12.14-6.95-2.83-2.84zM1 2.1A2 2 0 0 0 0 3.72v16.56a2 2 0 0 0 1 1.62l.09.05 9.27-9.27v-.22L1.09 2.05zM22.42 10.58l-2.67-1.53-3.17 3.17 3.17 3.17 2.68-1.54a2 2 0 0 0 0-3.27zM5.25.48L17.37 7.43 14.54 10.26 5.25.48z"/></svg>
+              <div class="app-store-text">
+                <div class="sub">Get it on</div>
+                <div class="main">Google Play</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="app-banner-right">
+          <div class="phone-mockup">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- ════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <!-- Brand -->
+      <div class="footer-brand">
+        <div class="nav-logo" style="margin-bottom:16px;">
+          <div class="logo-wrap" style="background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.12);">
+            <svg class="logo-svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="46" fill="rgba(255,255,255,0.1)"/>
+              <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2"/>
+              <g stroke="rgba(255,255,255,0.3)" stroke-width="1.5">
+                <line x1="50" y1="12" x2="50" y2="88"/>
+                <line x1="12" y1="50" x2="88" y2="50"/>
+                <line x1="22.5" y1="22.5" x2="77.5" y2="77.5"/>
+                <line x1="77.5" y1="22.5" x2="22.5" y2="77.5"/>
+              </g>
+              <circle cx="50" cy="50" r="7" fill="rgba(255,255,255,0.6)"/>
+              <path d="M 22 28 Q 50 8 78 28" fill="none" stroke="#E8580A" stroke-width="3" stroke-linecap="round"/>
+              <path d="M 22 72 Q 50 92 78 72" fill="none" stroke="#1B8A4C" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="logo-text">
+            <div class="brand">IRCTC</div>
+            <span class="tagline">Indian Railways</span>
+          </div>
+        </div>
+        <p>Indian Railway Catering and Tourism Corporation. Serving Gujarat and all of India with safe, affordable, and comfortable rail travel.</p>
+        <div class="footer-social">
+          <div class="social-btn" title="Twitter/X">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="15" height="15"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </div>
+          <div class="social-btn" title="Facebook">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white" width="15" height="15"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </div>
+          <div class="social-btn" title="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="1.8" width="15" height="15" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </div>
+          <div class="social-btn" title="YouTube">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="1.8" width="15" height="15" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.41 19.54C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Booking -->
+      <div class="footer-col">
+        <h5>Booking</h5>
+        <div class="footer-links">
+          <a class="footer-link">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+            Book Train Ticket
+          </a>
+          <a class="footer-link"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>Tatkal Booking</a>
+          <a class="footer-link"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>PNR Status</a>
+          <a class="footer-link"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>Seat Availability</a>
+          <a class="footer-link"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>Cancel Ticket</a>
+          <a class="footer-link"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>File TDR</a>
+        </div>
+      </div>
+
+      <!-- Services -->
+      <div class="footer-col">
+        <h5>Services</h5>
+        <div class="footer-links">
+          <a class="footer-link"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>Live Train Status</a>
+          <a class="footer-link"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>Gujarat Tourism</a>
+          <a class="footer-link"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>IRCTC Prime</a>
+          <a class="footer-link"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>IRCTC Wallet</a>
+          <a class="footer-link"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>Retiring Rooms</a>
+          <a class="footer-link"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>Rail Catering</a>
+        </div>
+      </div>
+
+      <!-- Help -->
+      <div class="footer-col">
+        <h5>Help & Info</h5>
+        <div class="footer-links">
+          <a class="footer-link"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>Rail Madad</a>
+          <a class="footer-link"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>FAQ</a>
+          <a class="footer-link"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>Refund Policy</a>
+          <a class="footer-link"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>Privacy Policy</a>
+          <a class="footer-link"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>Terms of Use</a>
+          <a class="footer-link"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>Accessibility</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      <span>© 2025 IRCTC · Indian Railway Catering & Tourism Corporation Ltd. All Rights Reserved.</span>
+      <div class="badges">
+        <div class="footer-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#22c55e"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          PCI DSS Secure
+        </div>
+        <div class="footer-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#3B82F6"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          256-bit SSL
+        </div>
+        <div class="footer-badge">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:#F4B942"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          Govt. of India
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ════════════════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════════════ -->
+<script>
+// ── Data: Quick Services ──
+const quickServices = [
+  { icon: 'search', label: 'Train Search',    color: '#EEF3FF', stroke: '#1A3A6B' },
+  { icon: 'file-text', label: 'PNR Status',   color: '#FFF3EC', stroke: '#E8580A' },
+  { icon: 'clock', label: 'Live Status',      color: '#EEF3FF', stroke: '#1A3A6B' },
+  { icon: 'x-circle', label: 'Cancel Ticket', color: '#FFF0F0', stroke: '#DC2626' },
+  { icon: 'refresh-cw', label: 'File TDR',    color: '#FFF8E8', stroke: '#C8860A' },
+  { icon: 'map-pin', label: 'Tourism',        color: '#EDFAF3', stroke: '#1B8A4C' },
+  { icon: 'gift', label: 'IRCTC Prime',       color: '#F5F0FF', stroke: '#7C3AED' },
+  { icon: 'headphones', label: 'Help 139',    color: '#EEF9FF', stroke: '#0284C7' },
+  { icon: 'user', label: 'My Profile',        color: '#F5F5F5', stroke: '#555577' },
+  { icon: 'credit-card', label: 'Wallet/UPI', color: '#EDFAF3', stroke: '#1B8A4C' },
+  { icon: 'star', label: 'IRCTC Loyalty',     color: '#FFF8E8', stroke: '#C8860A' },
+  { icon: 'smartphone', label: 'Mobile App',  color: '#EEF3FF', stroke: '#1A3A6B' },
+];
+
+const qg = document.getElementById('quickGrid');
+quickServices.forEach(s => {
+  const d = document.createElement('div');
+  d.className = 'quick-card';
+  d.innerHTML = `
+    <div class="qc-icon" style="background:${s.color}">
+      <i data-lucide="${s.icon}" style="color:${s.stroke}"></i>
+    </div>
+    <div class="qc-label">${s.label}</div>`;
+  qg.appendChild(d);
+});
+
+// ── Data: Routes (Gujarat-focused) ──
+const routes = [
+  { from: 'Rajkot',      to: 'Mumbai',     trains: 9,  price: '₹420', time: '10h', code: 'RJT→CSTM' },
+  { from: 'Ahmedabad',   to: 'Mumbai',     trains: 42, price: '₹355', time: '7h',  code: 'ADI→CSTM' },
+  { from: 'Surat',       to: 'Delhi',      trains: 18, price: '₹545', time: '14h', code: 'ST→NDLS'  },
+  { from: 'Vadodara',    to: 'Pune',       trains: 14, price: '₹275', time: '8h',  code: 'BRC→PUNE' },
+  { from: 'Gandhinagar', to: 'Jaipur',     trains: 6,  price: '₹310', time: '9h',  code: 'GNC→JP'   },
+  { from: 'Bhavnagar',   to: 'Surat',      trains: 11, price: '₹195', time: '5h',  code: 'BVC→ST'   },
+  { from: 'Jamnagar',    to: 'Ahmedabad',  trains: 8,  price: '₹150', time: '3h',  code: 'JAM→ADI'  },
+  { from: 'Rajkot',      to: 'Ahmedabad',  trains: 16, price: '₹95',  time: '2h',  code: 'RJT→ADI'  },
+];
+
+const rg = document.getElementById('routesGrid');
+routes.forEach(r => {
+  const d = document.createElement('div');
+  d.className = 'route-card';
+  d.onclick = () => {
+    document.getElementById('from-inp').value = r.from;
+    document.getElementById('to-inp').value = r.to;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  d.innerHTML = `
+    <div class="route-icon">
+      <i data-lucide="train" style="width:20px;height:20px;color:var(--navy)"></i>
+    </div>
+    <div class="route-info">
+      <div class="route-cities">
+        ${r.from} <span class="arrow">→</span> ${r.to}
+      </div>
+      <div class="route-meta">${r.code} · ${r.trains} trains · ${r.time}</div>
+    </div>
+    <div class="route-price">${r.price}</div>`;
+  rg.appendChild(d);
+});
+
+// ── Data: Offers ──
+const offers = [
+  { title: 'Up to 10% Off with SBI Card', tag: 'Bank Offer', desc: 'Valid on bookings above ₹500. SBI Debit/Credit.', bg: 'linear-gradient(135deg,#0F2550,#2352A0)' },
+  { title: 'Tatkal Booking — Instant Confirm', tag: 'Tatkal', desc: 'Opens at 10 AM, 1 day before journey.', bg: 'linear-gradient(135deg,#8B2500,#E8580A)' },
+  { title: 'No Booking Fee — IRCTC Prime', tag: 'Prime', desc: 'Save ₹30 per ticket. Upgrade to Prime now.', bg: 'linear-gradient(135deg,#4A1A6B,#8B3FC0)' },
+  { title: 'Gujarat Tourism Packages', tag: 'Tourism', desc: 'Kutch, Gir, Somnath from ₹3,999.', bg: 'linear-gradient(135deg,#0D5E33,#1B8A4C)' },
+  { title: 'UPI Cashback up to ₹150', tag: 'UPI Offer', desc: 'Pay via BHIM UPI & win scratch card.', bg: 'linear-gradient(135deg,#6B4700,#C8860A)' },
+];
+
+const oc = document.getElementById('offersContainer');
+offers.forEach(o => {
+  const d = document.createElement('div');
+  d.className = 'offer-card';
+  d.innerHTML = `
+    <div class="offer-head" style="background:${o.bg}">
+      <span class="offer-tag">${o.tag}</span>
+      <div class="offer-title">${o.title}</div>
+    </div>
+    <div class="offer-body">
+      <div class="offer-desc">${o.desc}</div>
+      <div class="offer-go">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;color:var(--navy)"><path d="M9 18l6-6-6-6"/></svg>
+      </div>
+    </div>`;
+  oc.appendChild(d);
+});
+
+// ── Data: Gujarat Tourism ──
+const destinations = [
+  {
+    name: 'Rann of Kutch', tag: 'Festival Season',
+    route: 'Bhuj via ADI · 7h', price: 'Packages from ₹4,999',
+    grad: 'linear-gradient(135deg, #B45309 0%, #92400E 40%, #78350F 100%)'
+  },
+  {
+    name: 'Gir National Park', tag: 'Wildlife',
+    route: 'Sasan Gir via RJT · 3h', price: 'Packages from ₹3,299',
+    grad: 'linear-gradient(135deg, #166534 0%, #14532D 50%, #052E16 100%)'
+  },
+  {
+    name: 'Somnath Temple', tag: 'Pilgrimage',
+    route: 'Somnath via RJT · 2.5h', price: 'Special trains available',
+    grad: 'linear-gradient(135deg, #1E40AF 0%, #1E3A8A 50%, #1E2F6A 100%)'
+  },
+  {
+    name: 'Dwarka Dham', tag: 'Pilgrimage',
+    route: 'Dwarka via RJT · 4h', price: 'Special Yatra trains',
+    grad: 'linear-gradient(135deg, #5B21B6 0%, #4C1D95 50%, #2E1065 100%)'
+  },
+  {
+    name: 'Saputara Hill Station', tag: 'Nature',
+    route: 'Waghai via ST · 2h', price: 'Packages from ₹2,499',
+    grad: 'linear-gradient(135deg, #065F46 0%, #064E3B 50%, #022C22 100%)'
+  },
+  {
+    name: 'Statue of Unity', tag: 'Landmark',
+    route: 'Kevadia via BRC · 1.5h', price: 'Direct train available',
+    grad: 'linear-gradient(135deg, #991B1B 0%, #7F1D1D 50%, #450A0A 100%)'
+  },
+];
+
+const tg = document.getElementById('tourismGrid');
+destinations.forEach(d => {
+  const card = document.createElement('div');
+  card.className = 'tourism-card';
+  card.innerHTML = `
+    <div class="tc-bg" style="background:${d.grad};height:100%;position:relative;">
+      <!-- Decorative pattern overlay -->
+      <div style="position:absolute;inset:0;background-image:radial-gradient(rgba(255,255,255,0.04) 1px, transparent 1px);background-size:20px 20px;"></div>
+      <!-- Subtle texture lines -->
+      <div style="position:absolute;bottom:0;left:0;right:0;height:60%;background:linear-gradient(to top,rgba(0,0,0,0.5) 0%,transparent 100%);"></div>
+    </div>
+    <div class="tc-overlay"></div>
+    <div class="tc-content">
+      <span class="tc-tag">${d.tag}</span>
+      <div class="tc-name">${d.name}</div>
+      <div class="tc-route">🚂 ${d.route}</div>
+      <div class="tc-price">${d.price}</div>
+    </div>`;
+  tg.appendChild(card);
+});
+
+// ── Data: Tips ──
+const tips = [
+  {
+    icon: 'clock', color: '#EEF3FF', stroke: '#1A3A6B',
+    title: 'Book 120 Days Early',
+    desc: 'Advance booking opens exactly 120 days before journey. Book early for confirmed berths.'
+  },
+  {
+    icon: 'zap', color: '#FFF3EC', stroke: '#E8580A',
+    title: 'Tatkal in 1 Min',
+    desc: 'Be logged in before 10 AM. Tatkal quota fills in minutes for popular trains.'
+  },
+  {
+    icon: 'shield', color: '#EDFAF3', stroke: '#1B8A4C',
+    title: 'Check Waitlist Chart',
+    desc: 'WL below 50 on Rajdhani/Shatabdi usually gets confirmed. Check RAC status 4 hrs before.'
+  },
+  {
+    icon: 'smartphone', color: '#FFF8E8', stroke: '#C8860A',
+    title: 'e-Ticket = No Print',
+    desc: 'Show e-ticket on phone with valid ID. No print needed for e-tickets since 2019.'
+  },
+];
+
+const tipGrid = document.getElementById('tipsGrid');
+tips.forEach(t => {
+  const card = document.createElement('div');
+  card.className = 'tip-card fade-up';
+  card.innerHTML = `
+    <div class="tip-icon" style="background:${t.color}">
+      <i data-lucide="${t.icon}" style="color:${t.stroke}"></i>
+    </div>
+    <div class="tip-title">${t.title}</div>
+    <div class="tip-desc">${t.desc}</div>`;
+  tipGrid.appendChild(card);
+});
+
+// ── Initialize Lucide Icons ──
+lucide.createIcons();
+
+// ── Flatpickr ──
+flatpickr('#journey-date', {
+  minDate: 'today',
+  maxDate: new Date(Date.now() + 120 * 86400000),
+  defaultDate: new Date(Date.now() + 86400000),
+  dateFormat: 'd M Y',
+  disableMobile: false,
+});
+
+// ── Tab switching (search card) ──
+function switchCardTab(el, type) {
+  document.querySelectorAll('.card-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  const target = document.getElementById('tab-' + type);
+  if (target) target.classList.add('active');
+}
+
+// ── Service strip tabs ──
+function setStripTab(el, type) {
+  document.querySelectorAll('.svc-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+// ── Class chip selection ──
+document.querySelectorAll('.class-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.class-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+  });
+});
+
+// ── Toggle flex dates ──
+function toggleFlex(toggle) {
+  toggle.classList.toggle('on');
+}
+
+// ── Swap stations ──
+function swapStations() {
+  const f = document.getElementById('from-inp');
+  const t = document.getElementById('to-inp');
+  const tmp = f.value; f.value = t.value; t.value = tmp;
+  // Visual feedback
+  const btn = document.querySelector('.swap-btn');
+  btn.style.transform = 'rotate(180deg)';
+  setTimeout(() => btn.style.transform = '', 350);
+}
+
+// ── Search trains ──
+function searchTrains() {
+  const from = document.getElementById('from-inp').value.trim();
+  const to   = document.getElementById('to-inp').value.trim();
+  if (!from || !to) {
+    if (!from) { document.getElementById('from-inp').style.borderColor = '#DC2626'; }
+    if (!to)   { document.getElementById('to-inp').style.borderColor   = '#DC2626'; }
+    setTimeout(() => {
+      document.getElementById('from-inp').style.borderColor = '';
+      document.getElementById('to-inp').style.borderColor   = '';
+    }, 1500);
+    return;
+  }
+  alert(`Searching trains from ${from} to ${to}…\n\n(Opens train listing in the full IRCTC app)`);
+}
+
+// ── Mobile menu ──
+function toggleMobileMenu() {
+  document.getElementById('mobileNav').classList.toggle('open');
+}
+
+// ── Counter animation ──
+function animateCounters() {
+  document.querySelectorAll('.counter').forEach(el => {
+    const target = +el.dataset.target;
+    let start = 0;
+    const isLarge = target > 99999;
+    const step = Math.ceil(target / 55);
+    const timer = setInterval(() => {
+      start = Math.min(start + step, target);
+      if (isLarge) {
+        el.textContent = (start / 10000000).toFixed(1);
+      } else {
+        el.textContent = start.toLocaleString('en-IN');
+      }
+      if (start >= target) clearInterval(timer);
+    }, 30);
+  });
+}
+
+// ── Scroll reveal + counter trigger ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+// Counter trigger on info strip
+const infoStrip = document.querySelector('.info-strip');
+const counterObserver = new IntersectionObserver(entries => {
+  if (entries[0].isIntersecting) { animateCounters(); counterObserver.disconnect(); }
+}, { threshold: 0.3 });
+if (infoStrip) counterObserver.observe(infoStrip);
+
+// Also trigger hero counters on load
+setTimeout(() => {
+  document.querySelectorAll('.hero-stats .counter').forEach(el => {
+    const target = +el.dataset.target;
+    let start = 0;
+    const step = Math.ceil(target / 50);
+    const timer = setInterval(() => {
+      start = Math.min(start + step, target);
+      el.textContent = start.toLocaleString('en-IN');
+      if (start >= target) clearInterval(timer);
+    }, 28);
+  });
+}, 400);
+
+// ── Responsive: two column → single on mobile ──
+function adjustLayout() {
+  const twoCol = document.querySelector('.two-col-section');
+  if (!twoCol) return;
+  if (window.innerWidth < 768) {
+    twoCol.style.gridTemplateColumns = '1fr';
+  } else {
+    twoCol.style.gridTemplateColumns = '1fr 1fr';
+  }
+}
+adjustLayout();
+window.addEventListener('resize', adjustLayout);
+</script>
+</body>
+</html>
