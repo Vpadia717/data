@@ -2,6 +2,12 @@
 
 ## 177841
 
+### Links
+
+```
+https://chatgpt.com/share/6a835a86-4914-83e9-9b6a-72e73e8f84bb
+```
+
 # 🧶 Handmade Crochet Products
 
 # Complete Flipkart + Meesho Product Listing Guide
