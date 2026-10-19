@@ -2,4 +2,4 @@
 
 875988
 
-[New Logo](https://drive.google.com/drive/folders/1u_97RiClGY_ijALSQ2B1HxYjnBHAAPe_?usp=sharing)
+[New Logo - 19-10-2026](https://drive.google.com/drive/folders/16G6JplemgXSIn2EAYewlU2T8mhIfVJGX?usp=sharing)
