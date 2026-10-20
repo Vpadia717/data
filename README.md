@@ -2,4 +2,4 @@
 
 431730
 
-[New Logo - 19-10-2026](https://drive.google.com/drive/folders/16G6JplemgXSIn2EAYewlU2T8mhIfVJGX?usp=sharing)
+[New Logo - 20-10-2026](https://drive.google.com/drive/folders/1M0qgjYXrm55Srh8tfPA4uz-WdlXoH00V?usp=sharing)
